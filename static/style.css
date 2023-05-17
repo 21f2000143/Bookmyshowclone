@@ -1,0 +1,101 @@
+#navbar1 {
+    background-color: rgb(51, 53, 69);
+    height: 64px;
+    width: 100%;
+    padding: 0px;
+    box-shadow: none;
+}
+.basewidth {
+    width: 1240px;
+    margin: 0 auto;
+    height: 64px;
+}
+.fvDaRc {
+    max-width: 1240px;
+    width: 92%;
+    margin: 0px auto;
+    height: 100%;
+}
+.hHdXnO {
+    display: flex;
+    height: 100%;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+.frHEtT {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.deWunx {
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 100%;
+    width: 75%;
+}
+.jkzOOb {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+    height: 100%;
+}
+.jyVauk {
+    width: 134px;
+    min-width: 134px;
+    vertical-align: middle;
+}
+.eJWkPj {
+    width: 100%;
+    overflow: hidden;
+}
+.scrollarea {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.video-player {
+    width: 80%;
+    height: auto;
+}
+.outer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*.row {
+    height: 100vh;
+}*/
+/* .carousel {
+    height:90vh;
+    width: auto;
+}*/
+.carousel-inner {
+    align-items: center;
+} 
+.carousel-item {
+    height:80vh;
+    width: 20vw;
+}
+#trend {
+    font-family: 'Poppins', sans-serif;
+    font-family: 'Satisfy', cursive;
+}
+#trendfoot {
+    font-family: 'Poppins', sans-serif;
+    font-family: 'Satisfy', cursive;
+    font-family: 'Teko', sans-serif;
+}
+#brand{
+    font-family: 'Poppins', sans-serif;
+    font-family: 'Rowdies', cursive;
+    font-family: 'Satisfy', cursive;
+    font-family: 'Teko', sans-serif;
+}
