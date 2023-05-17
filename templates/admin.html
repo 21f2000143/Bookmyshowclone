@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Admin:{{emp_id}}</title>
+</head>
+<body class="scrollarea rounded border border-bottom-0 row-gap-5" style="padding-top: 50px; padding-bottom: 30px;">
+    <div class="container text-center">
+        <nav class="navbar navbar-expand-lg bg-light fixed-top">
+            <div class="container-fluid align-middle">
+                <div class="d-flex flex-row">
+                    <h4><span class="badge bg-secondary">{{ emp_id }}'s Dashboard</span></h4>
+                </div>
+                <div class="d-flex flex-row-reverse">
+                    <div class="p-2"><a href="{{url_for('logout')}}" class="btn btn-outline-primary">logout</a></div>
+                    <div class="p-2">
+                        <form action="{{url_for('admin_home')}}" class="row g-3" method="post">
+                            <div class="row-12">
+                              <button class="btn btn-outline-primary" id="loginBtn" type="submit">Summary</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="row">
+            {% if venues|length > 0 %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% set size=venues|length %}
+                {% for i in range(size) %}
+                <div class="col">
+                    <div class="card text-center bg-body-secondary">
+                        <div class="card-body">
+                        <h5 class="card-title">{{ venues[i].venue_name }}</h5>
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Available Shows</h6>
+                            </div> 
+                            {% if venues[i].shows|length > 0 %}
+                            <ul class="list-group list-group-flush">
+                            {% for show in venues[i].shows %}                            
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col">
+                                        {{show.show_name}}
+                                    </div>
+                                    <div class="col">
+                                        <a href="{{url_for('show_action', s_id=show.show_id, v_id=venues[i].venue_id)}}" class="btn btn-warning">Actions</a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                            <form action="{{url_for('create_show', v_id=venues[i].venue_id)}}" method="post">
+                                <button class="btn btn-outline-primary" type="submit">Add show</button>
+                            </form>
+                            </ul>
+                            {% else %}
+                            <p>No shows created</p>
+                            <form action="{{url_for('create_show', v_id=venues[i].venue_id)}}" method="post">
+                                <button class="btn btn-outline-primary" type="submit">Add show</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <form action="{{url_for('update_venue', v_id=venues[i].venue_id)}}" method="post">
+                                    <button class="btn btn-outline-info" type="submit">Edit</button>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <form action="{{url_for('delete', v_id=venues[i].venue_id)}}" method="post">
+                                    <button class="btn btn-outline-warning" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                {% if i == size - 1 %}
+                <div class="col">
+                    <div class="position-relative top-50 start-50 translate-middle d-flex justify-content-center">
+                        <form action="{{url_for('create_venue')}}" class="row g-3" method="post">
+                            <button class="btn btn-primary" id="loginBtn" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info mt-5" role="alert">
+                No shows and venues created.
+            </div>
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <form action="{{url_for('create_venue')}}" class="row g-3" method="post">
+                    <button class="btn btn-primary" id="loginBtn" type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

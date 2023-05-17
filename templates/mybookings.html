@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>User-Bookings</title>
+</head>
+<body class="scrollarea rounded border border-bottom-0 row-gap-5" style="padding-top: 50px; padding-bottom: 30px;">
+    <div class="container text-center">
+        <nav class="navbar navbar-expand-lg fixed-top bg-light">
+            <div class="container-fluid align-middle">
+                <div class="d-flex flex-row">
+                    <h4><span class="badge bg-secondary">{{ user_id }}'s Dashboard</span></h4>
+                </div>
+                <div class="d-flex flex-row-reverse">
+                    <div class="p-2"><a href="{{url_for('logout_user')}}" class="btn btn-outline-primary">logout</a></div>
+                    <div class="p-2"><a href="{{url_for('user_dashboard', userid=user.user_id)}}" class="btn btn-outline-primary">Home</a></div>
+                    <div class="p-2"><button class="btn btn-primary-disabled">Profile</button></div>
+                </div>
+            </div>
+        </nav>
+        {% if shows|length > 0 %}
+        <div class="row">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for i in range(limit) %}
+                <div class="col">
+                    <div class="card text-center bg-body-secondary">
+                        <div class="card-body">
+                            <div class="col">
+                                {{ shows[i][1]}}
+                            </div>                        
+                            <div class="col">
+                                {{ venues[i][0] }}
+                            </div>                        
+                            <div class="col">
+                                <p>
+                                    {{ shows[i][2].strftime('%H:%M') }} {{ shows[i][3].strftime('%H:%M') }}
+                                </p>
+                            </div>                        
+                            <div class="col">
+                                <form action="{{url_for('rate_show', show_id=shows[i][0], user_id=user.user_id)}}" method="get">
+                                    <button class="btn btn-warning" type="submit">Rate</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            You have not booked any show yet, Click on home and book your first show!
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

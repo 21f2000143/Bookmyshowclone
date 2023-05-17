@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <title>Admin login page</title>
+</head>
+
+<body>
+    <div class="container text-center mt-5">
+      <!-- if invalid format email entered -->
+      {% if admin_login_status=='invalid_email' %}
+        <div class="row justify-content-center">
+            <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                please enter a valid email address! Enter a valid email.
+            </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8">
+            <a href="{{url_for('admin_login')}}" class="btn btn-outline-dark">login again</a>
+            </div>
+        </div>
+      {% elif admin_login_status=='no_admin_found' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                No Admin found. Please go back to try with other email or create first admin in database.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('admin_login')}}" class="btn btn-outline-dark">login again</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='no_user_found' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                No User found. Please go back to try with other email or create first user in database.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('user_login')}}" class="btn btn-outline-dark">login again</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='invalid_email_user_create' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                invalid email address, please enter a valid email address.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('user_create')}}" method="get">
+              <button class="btn btn-outline-dark" type="submit">Create again</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='invalid_user_name' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                Name can contain only alphabets.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('user_create')}}" method="get">
+              <button class="btn btn-outline-dark" type="submit">Create again</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='invalid_user_mobile' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                Mobile should only contains digits.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('user_create')}}" method="get">
+              <button class="btn btn-outline-dark" type="submit">Create again</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='user_pass_miss' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                Password and Confirm password are not same.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('user_create')}}" method="get">
+              <button class="btn btn-outline-dark" type="submit">Create again</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='user_create_success' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                User account successfully created.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a class="btn btn-outline-dark" href="{{url_for('user_dashboard', userid=userid)}}">Go Home</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='incorrect_password' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Entered password is incorrect. Go back to enter correct password!
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('admin_login')}}" class="btn btn-outline-dark">login again</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='incorrect_password_user' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Entered password is incorrect. Go back to enter correct password!
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('user_login')}}" class="btn btn-outline-dark">login again</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='empty' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Please fill all the fields!
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('admin_login')}}
+            " class="btn btn-outline-dark">login again</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='empty_user' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Please fill all the fields!
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('user_login')}}
+            " class="btn btn-outline-dark">login again</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='empty_user_create' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Please fill all the fields!
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('user_create')}}" method="get">
+              <button class="btn btn-outline-dark" type="submit">Create again</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='venue_already_exist' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Venue already exist in the database. Go back and create new venue!
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('create_venue')}}" method="post">
+              <button class="btn btn-outline-dark" type="submit">Go back</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='show_already_exist' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Show already exist in the database. Go back and add new show!
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('create_show',v_id=v_id)}}" method="post">
+              <button class="btn btn-outline-dark" type="submit">Go back</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='invalid_data_literal_venue' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Invalid data literal entered. Go back and enter valid data.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('create_venue')}}" method="post">
+              <button class="btn btn-outline-dark" type="submit">Go back</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='venue_not_exist' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                entered venue does not exist. Go back and create the venue.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('create_venue')}}
+            " class="btn btn-outline-dark">Go back</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='invalid_data_literal_show' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Invalid data literal entered. Go back and enter valid data.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('create_show', v_id=v_id)}}" method="post">
+              <button class="btn btn-outline-dark" type="submit">Go back</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='not_filled' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Go back and fill all the field.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('create_venue', v_id=v_id)}}" method="post">
+              <button class="btn btn-outline-dark" type="submit">Go back</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='not_filled_venue' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Go back and fill all the field.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('update_venue', v_id=v_id)}}" method="post">
+              <input type="hidden" name="operation" value="login">
+              <button class="btn btn-outline-dark" type="submit">Go to Dashboard</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='deleted_show' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Show deleted successfully.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a class="btn btn-outline-success" href="{{url_for('admin_dashboard')}}">Go to Dashboard</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='delete_confirmation' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Venue deleted successfully.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('delete_venue', v_id=v_id)}}" method="post">
+              <button class="btn btn-outline-dark" type="submit">confirm</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='deleted_venue' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Venue deleted successfully.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('admin_dashboard')}}" class="btn btn-outline-dark" type="submit">Go to Dashboard</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='no_show_update' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                Show not updated. Go back to dashboard and try again.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('admin_dashboard')}}
+            " class="btn btn-outline-dark">Go to Dashboard</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='show_already_booked' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                You have already booked ticket for this movie. So go to your dashboard and book for another.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('user_dashboard', userid=userid)}}
+            " class="btn btn-outline-dark">Go to Dashboard</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='no_venue_update' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                Venue not updated. Go back to dashboard and try again.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('admin_dashboard')}}" method="post">
+              <input type="hidden" name="operation" value="login">
+              <button class="btn btn-outline-success" type="submit">Go to Dashboard</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='show_updated' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Show updated successfully.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a class="btn btn-outline-success" href="{{url_for('admin_dashboard')}}">Go to Dashboard</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='venue_updated' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Venue updated successfully.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a class="btn btn-outline-dark" href="{{url_for('admin_dashboard')}}">Go to Dashboard</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='success_user' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Welcome to User page.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a class="btn btn-outline-dark" href="{{url_for('user_dashboard', userid=userid)}}">Go to Dashboard</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='success_booked' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Your show booked successfully.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('user_booking', userid=userid)}}" method="post">
+              <button class="btn btn-outline-dark" type="submit">Go to bookings</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='success_rate' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                You rated the show successfully.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('user_booking', userid=userid)}}" method="post">
+              <button class="btn btn-outline-dark" type="submit">Go to bookings</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='rate_incorrect' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Go back, rate from 0 and 5.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('rate_show', show_id=show_id, user_id=userid)}}" method="get">
+              <button class="btn btn-outline-dark" type="submit">Go back rate</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='success_booked_failed' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-danger" role="alert">
+                Number of booking seats exceeding the number of Available seats. Please go back and check the Available seats.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('user_book', show_id=show_id, user_id=user_id, venue_id=venue_id)}}
+            " class="btn btn-outline-dark">Go back</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='no_more_show' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                The venue capacity is full so no more show can be added.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a class="btn btn-outline-success" href="{{url_for('admin_dashboard')}}">Go to Dashboard</a>
+          </div>
+        </div>
+      {% elif admin_login_status=='success' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-success" role="alert">
+                Welcome to Admin page.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <a href="{{url_for('admin_dashboard')}}" class="btn btn-outline-success" type="submit">Go to Dashboard</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+</body>
+</html>

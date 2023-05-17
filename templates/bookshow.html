@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Admin:{{emp_id}}</title>
+</head>
+<body style="overflow: hidden;">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid align-middle">
+            <div class="d-flex flex-row mb-3">
+                <h4><span class="badge bg-secondary">{{ user_id }}'s Dashboard</span></h4>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <div class="p-2"><a href="{{url_for('logout_user')}}" class="btn btn-outline-primary">logout</a></div>
+                <div class="p-2">
+                    <form action="{{url_for('user_dashboard', userid=user.user_id)}}" class="row g-3" method="post">
+                        <div class="row-12">
+                            <button class="btn btn-outline-primary" id="loginBtn" type="submit">Home</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="p-2">Profile</div>
+            </div>
+        </div>
+    </nav>
+    {% if user.shows|length > 0 %}
+    <div class="col-12 scrollarea shadow p-3 mb-5 bg-body-tertiary rounded border border-bottom-0 row-gap-5" style="height: 100vh;">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for show in user.shows %}
+            <div class="col">
+                <div class="card text-center bg-body-secondary">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ show.show_venue}}</h5>
+                      <div class="card">
+                        <div class="card-header">
+                            <h6>Booked show</h6>
+                        </div> 
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    {{show.show_name}}
+                                </div>
+                                <div class="col">
+                                    {{show.show_name}}
+                                </div>
+                                <div class="col">
+                                    <a href="#" class="btn btn-warning">Rate</a>
+                                </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <br>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+       You have not booked any show till. To book your first show click on Home button!
+    </div>
+    {% endif %}
+</body>
+</html>
