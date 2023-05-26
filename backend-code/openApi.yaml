@@ -1,0 +1,330 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: |-
+    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+
+    _If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
+    
+    Some useful links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: http://127.0.0.1:8000/
+tags:
+  - name: venue
+    description: Everything about your venue
+  - name: show
+    description: Access to show
+  - name: user
+    description: Operations about user
+  - name: admin
+    description: Operations about user
+  - name: ticket
+    description: Operations about user
+paths:
+  /get/venue:
+    get:
+      tags:
+        - venue
+      description: getting all venues
+      operationId: venueId
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Venues'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Venues'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+  /get/show:
+    get:
+      tags:
+        - show
+      description: getting all shows
+      operationId: showId
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shows'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Shows'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+  /get/user/{username}:
+    get:
+      tags:
+        - user
+      description: get user by id
+      operationId: userId
+      parameters:
+        - name: username
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+            example: rohan@gmail.com
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+  /get/admin/{adminname}:
+    get:
+      tags:
+        - admin
+      description: get admin by id
+      operationId: admonId
+      parameters:
+        - name: adminname
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+            example: dummy@gmail.com
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+  /get/ticket:
+    get:
+      tags:
+        - ticket
+      description: get tickets by id
+      operationId: ticketId
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tickets'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Tickets'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+components:
+  schemas:
+    Movie:
+      type: object
+      properties:
+        show_id:
+          type: integer
+          example: 1
+      xml:
+        name: movie
+    Mticket:
+      type: object
+      properties:
+        ticket_id:
+          type: integer
+          example: 1
+      xml:
+        name: mticket
+    Venue:
+      type: object
+      properties:
+        venue_id:
+          type: integer
+          example: 10
+        venue_name:
+          type: string
+          example: IITM
+        venue_place:
+          type: string
+          example: Chennai
+        venue_capacity:
+          type: integer
+          example: 100
+        venue_location:
+          type: string
+          example: Tamil Nadu
+        shows:
+          type: array
+          xml:
+            name: movie
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Movie'
+      xml:
+        name: venue
+    Show:
+      type: object
+      properties:
+        show_id:
+          type: integer
+          example: 10
+        show_name:
+          type: string
+          example: fehguy
+        show_rating:
+          type: number
+          example: 4.5
+        show_price:
+          type: number
+          example: 150.60
+        no_seats:
+          type: integer
+          example: 150
+        show_stime:
+          type: string
+          example: 10:00
+        show_etime:
+          type: string
+          example: 12:00
+      xml:
+        name: show
+    User:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: rohan@gmail.com
+        user_name:
+          type: string
+          example: Palo Alto
+        user_mobile:
+          type: string
+          example: 6201486140
+        user_pass:
+          type: string
+          example:
+        tickets:
+          type: array
+          xml:
+            name: mticket
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Mticket'
+      xml:
+        name: user
+    User:
+      type: object
+      properties:
+        emp_id:
+          type: string
+          example: rohan@gmail.com
+        emp_name:
+          type: string
+          example: Palo Alto
+        emp_mobile:
+          type: string
+          example: 6201486140
+        emp_pass:
+          type: string
+          example:
+      xml:
+        name: admin
+    Ticket:
+      type: object
+      properties:
+        ticket_id:
+          type: integer
+          example: 10
+        venue_id:
+          type: integer
+          example: 2
+        show_id:
+          type: integer
+          example: 3
+        no_seats:
+          type: integer
+          example: 250
+      xml:
+        name: ticket
+    Venues:
+      type: array
+      xml:
+        name: venue
+        wrapped: true
+      items:
+        $ref: '#/components/schemas/Venue'
+    Shows:
+      type: array
+      xml:
+        name: show
+        wrapped: true
+      items:
+        $ref: '#/components/schemas/Show'
+    Tickets:
+      type: array
+      xml:
+        name: ticket
+        wrapped: true
+      items:
+        $ref: '#/components/schemas/Ticket'
+        
+  requestBodies:
+    Pet:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pet'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Pet'
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'

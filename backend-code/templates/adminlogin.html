@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<HTML lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+  <title>Ticket Show - admin login</title>
+</head>
+
+<body>
+  <div class="container text-center mt-5">
+    <div class="row justify-content-center position-absolute top-50 start-50 translate-middle">
+      <div class="card p-3 justify-content-center" style="width: 18rem;">
+        <div class="badge bg-primary">
+          <!-- Vertically centered modal -->
+          <div class="modal-dialog modal-dialog-centered">
+            <h1>Ticket Show</h1>
+          </div>
+        </div>
+        <p class="font-monospace">
+          User login
+        </p>
+        <form action="/ts/admin/validation" class="row g-3" method="post">
+          <div class="row-md-6">
+            <div class="input-group">
+              <input type="email" name="Email" class="form-control" placeholder="User-email" required>
+            </div>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+          </div>
+          <div class="row-12">
+            <button class="btn btn-outline-success" id="loginBtn" type="submit">login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>  
+</body>
+</html>

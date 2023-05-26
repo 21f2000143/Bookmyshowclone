@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Booking {{show.show_name}}</title>
+</head>
+    <body style="overflow: hidden;">
+        <div class="container text-center">
+            <nav class="navbar navbar-expand-lg bg-light">
+                <div class="container-fluid align-middle">
+                    <div class="d-flex flex-row">
+                        <h4><span class="badge bg-secondary">{{ user_id }}'s Dashboard</span></h4>
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+                        <div class="p-2"><a href="/logout" class="btn btn-outline-primary">logout</a></div>
+                        <div class="p-2">
+                            <form action="{{url_for('user_booking', userid=user.user_id)}}" class="row g-3" method="post">
+                                <div class="row-12">
+                                    <button class="btn btn-outline-primary" id="loginBtn" type="submit">bookings</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="p-2"><button class="btn btn-primary-disabled">Profile</button></div>
+                    </div>
+                </div>
+            </nav>
+            <div class="row justify-content-center position-absolute top-50 start-50 translate-middle">
+                <div class="card p-3 justify-content-center" style="width: 25rem;">
+                  <div class="badge bg-warning">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <h1>{{ show.show_name }}</h1>
+                    </div>
+                  </div>
+                  <p class="font-monospace">
+                    Booking Ticket for {{ show.show_stime.strftime("%H:%M") }} - {{ show.show_etime.strftime("%H:%M") }}
+                  </p>
+                  <form action="{{ url_for('show_book', user_id=user.user_id, show_id=show.show_id, venue_id=venue.venue_id )}}" class="row g-3" method="post">
+                    <div class="row-md-6">
+                        <div class="input-group">
+                          <input type="text" name="vname" class="form-control" placeholder="Available seats:{{ show.no_seats}}" required readonly>
+                        </div>
+                        </div>
+                        <br>
+                        <div class="row-md-6">
+                            <input type="text" name="vplace" class="form-control" placeholder="Price per ticket:{{show.show_price}}" required readonly>
+                        </div>
+                        <br>
+                        <div class="row-md-6">
+                            <input type="number" name="Number" class="form-control" placeholder="Number of tickets" required>
+                        </div>
+                        <button class="btn btn-outline-success" type="submit">Book Now</button>
+                  </form>
+                </div>
+            </div>
+        </div>        
+    </body>
+</html>

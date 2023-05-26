@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>User:{{emp_id}}</title>
+</head>
+<body style="overflow: hidden;">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid align-middle">
+            <div class="d-flex flex-row mb-3">
+                <h4><span class="badge bg-secondary">{{ emp_id }}'s Dashboard</span></h4>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <div class="p-2"><a href="/logout" class="btn btn-outline-primary">logout</a></div>
+                <div class="p-2">
+                    <form action="{{url_for('admin_home')}}" class="row g-3" method="post">
+                        <div class="row-12">
+                          <button class="btn btn-outline-primary" id="loginBtn" type="submit">Summary</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="alert alert-info" role="alert">
+        To update click on update button after filling data in fields or to delete just click on delete button.
+    </div>
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="card p-3 justify-content-center" style="width: 18rem;">
+            <form action="admin/dashboard" class="row g-3" method="post">
+                <div class="row-md-6">
+                    <div class="input-group">
+                      <input type="text" name="sname" class="form-control" placeholder="{{show.show_name}}" value="{{show.show_name}}" required>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="row-md-6">
+                        <input type="text" name="stag" class="form-control" placeholder="{{show.show_tag}}" value="{{show.show_tag}}" required>
+                    </div>
+                    <br>
+                    <div class="row-md-6">
+                        <input type="number" name="sprice" class="form-control" placeholder="{{show.show_price}}" value="{{show.show_price}}" required>
+                    </div>
+                    <br>
+                    <div class="row-md-6">
+                        <input type="number" name="sseats" class="form-control" placeholder="{{show.no_seats}}" value="{{show.no_seats}}" readonly required>
+                    </div>
+                    <div class="row-md-6">
+                        <input type="text" name="sstime" class="form-control" placeholder="{{show.show_stime.strftime("%H:%M")}}" value="{{show.show_stime.strftime("%H:%M")}}" required>
+                    </div>
+                    <div class="row-md-6">
+                        <input type="text" name="setime" class="form-control" placeholder="{{show.show_etime.strftime("%H:%M")}}" value="{{show.show_etime.strftime("%H:%M")}}" required>
+                    </div>
+                    <div class="row-md-6">
+                        <input type="text" name="svenue" class="form-control" placeholder="{{ venue.venue_name }}" value="{{ venue.venue_name }}" readonly required>
+                    </div>
+                    <div class="row-md-6">
+                        <input type="hidden" name="s_id" class="form-control"  value="{{ show.show_id }}">
+                    </div>
+                    <div class="row-md-6">
+                        <input type="hidden" name="v_id" class="form-control"  value="{{ venue.venue_id }}">
+                    </div>
+                    <br>
+                    <div class="row-12 d-flex justify-content-center">
+                        <button class="btn btn-outline-secondary" name="operation" value="show_delete" type="submit">Delete</button>
+                        <button class="btn btn-outline-secondary" name="operation" value="show_update" type="submit">Update</button>
+                    <div class="0">
+                </div>
+            </form>
+        </div>
+    </div>    
+</body>
+</html>
