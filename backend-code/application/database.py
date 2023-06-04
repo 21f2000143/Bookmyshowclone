@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import os
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 SQLITE_DB_DIR = os.path.join(basedir, "../db_directory")
@@ -20,16 +21,3 @@ def init_db():
     # you will have to import them first before calling init_db()
     import application.models
     Base.metadata.create_all(bind=engine)
-# from sqlalchemy.ext.declarative import declarative_base
-# from flask_sqlalchemy import SQLAlchemy
-
-# engine = None
-# Base = declarative_base()
-# db = SQLAlchemy()
-
-# # def db_init(app):
-# #     db.init_app(app)
-
-# #     # Creates the tables if the db doesn't already exist
-# #     with app.app_context():
-# #         db.create_all()
