@@ -268,7 +268,7 @@
             </form>
           </div>
         </div>
-      {% elif admin_login_status=='not_filled' %}
+      {% elif admin_login_status=='not_filled_for_venue_create' %}
         <div class="row justify-content-center">
           <div class="col-8">
             <div class="alert alert-warning" role="alert">
@@ -283,7 +283,7 @@
             </form>
           </div>
         </div>
-      {% elif admin_login_status=='not_filled_venue' %}
+      {% elif admin_login_status=='not_filled_for_venue_update' %}
         <div class="row justify-content-center">
           <div class="col-8">
             <div class="alert alert-warning" role="alert">
@@ -294,6 +294,22 @@
         <div class="row justify-content-center">
           <div class="col-8">
             <form action="{{url_for('update_venue', v_id=v_id)}}" method="post">
+              <input type="hidden" name="operation" value="login">
+              <button class="btn btn-outline-dark" type="submit">Go to Dashboard</button>
+            </form>
+          </div>
+        </div>
+      {% elif admin_login_status=='not_filled_for_show_create' %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="alert alert-warning" role="alert">
+                Go back and fill all the field.
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <form action="{{url_for('create_show')}}" method="post">
               <input type="hidden" name="operation" value="login">
               <button class="btn btn-outline-dark" type="submit">Go to Dashboard</button>
             </form>

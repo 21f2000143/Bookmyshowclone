@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Alert message</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <style>
+            .alert {
+              padding: 10px;
+              background-color: yellow;
+              position: relative;
+            }
+            
+            .close {
+              position: absolute;
+              top: 5px;
+              right: 10px;
+              cursor: pointer;
+            }
+        </style>
+    </head>
+<body>
+    <div id="app">
+        <div v-if="alertMessage" class="alert">
+            ${ alertMessage }
+            <span class="close" @click="dismissAlert">&times;</span>
+          </div>
+          <button @click="showAlert">Show Alert</button>
+    </div>
+</body>
+<script type="text/javascript" src="{{ url_for('static', filename='js/alertmessage.js') }}"></script>
+</html>

@@ -1,6 +1,6 @@
 from flask import render_template, request
 from flask import current_app as app
-from application.database import db_session
+from application.database import db
 from .models import *
 from datetime import datetime
 import numbers
@@ -56,7 +56,6 @@ def user_dashboard():
                                     primarykeys.append(vs.venue_id)
                     else:
                         pass
-
                 elif word.upper() in stag:
                     primarykey=Show.query.filter(Show.show_tag.ilike('%'+word+'%')).with_entities(Show.show_id).all()
                     primarykey1=[tup[0] for tup in primarykey]
@@ -111,13 +110,15 @@ def user_dashboard():
         email = current_user.email
         i=email.index("@")
         email=email[:i]
-        return render_template('user.html', venues=venues, user=email)
+        
+        return render_template('user.html', venues=venues, user=email, current_user=current_user)
     elif request.method=='GET':
         venues = Venue.query.all()
+        seats=Seats.query.all()
         email = current_user.email
         i=email.index("@")
         email=email[:i]
-        return render_template('user.html', venues=venues, user=email)
+        return render_template('user.html', venues=venues, user=email, seats=seats, current_user=current_user)
 
 @app.route('/user/user_booking', methods=['POST','GET'])
 @login_required
@@ -140,9 +141,10 @@ def user_book(show_id, venue_id):
     email=current_user.email
     venue=Venue.query.filter_by(venue_id=venue_id).first()
     show=Show.query.filter_by(show_id=show_id).first()
+    seat=Seats.query.filter_by(venue_id=venue.venue_id, show_id=show.show_id, book_time=datetime.now()).first()
     i=email.index("@")
     email=email[:i]
-    return render_template('book.html', show=show, user=email, venue=venue)
+    return render_template('book.html', show=show, user=email, venue=venue, seat=seat)
 
 @app.route('/ts/rate/<int:show_id>', methods=['POST','GET'])
 @login_required
@@ -156,7 +158,7 @@ def rate_show(show_id):
         if int(rate)>=0 and int(rate)<=5:
             show = Show.query.filter_by(show_id=show_id).first()
             show.show_rating=float(rate)
-            db_session.commit()
+            db.session.commit()
             admin_login_status='success_rate'
             return render_template('adminpage.html', admin_login_status=admin_login_status)
         else:
@@ -168,15 +170,15 @@ def rate_show(show_id):
 @login_required
 @roles_required('user')
 def show_book(show_id, venue_id):
-    show=Show.query.filter_by(show_id=show_id).first()
+    seat=Seats.query.filter_by(show_id=show_id, venue_id=venue_id).first()
     number=request.form['Number']
-    if show.no_seats>=int(number):
+    if seat.no_seats>=int(number):
         user=User.query.filter_by(id=current_user.id).first()
         venue=Venue.query.filter_by(venue_id=venue_id).first()
-        ticket=Ticket(show_id=show.show_id, venue_id=venue.venue_id, no_seats=number)
-        show.no_seats=show.no_seats - int(number)
+        ticket=Ticket(show_id=seat.show_id, venue_id=venue.venue_id, no_seats=number)
+        seat.no_seats=seat.no_seats - int(number)
         user.tickets.append(ticket)
-        db_session.commit()
+        db.session.commit()
         admin_login_status='success_booked'
         return render_template('adminpage.html', admin_login_status=admin_login_status)
     else:
@@ -202,8 +204,8 @@ def user_create():
                     if mobile.isdigit():
                         if password==cpassword:
                             user = User(email=email, user_name=name, user_mobile=mobile, user_pass=password)
-                            db_session.add(user)
-                            db_session.commit()
+                            db.session.add(user)
+                            db.session.commit()
                             admin_login_status='user_create_success'
                             return render_template('adminpage.html', admin_login_status=admin_login_status, userid=current_user.email)
                         else:
@@ -222,4 +224,10 @@ def user_create():
             admin_login_status='empty_user_create'
             return render_template('adminpage.html')
 
+@app.route('/user/theatre/<int:vid>')
+@login_required
+def utheatre_view(vid):
+    venues = Venue.query.filter_by(venue_id=vid).first()
+    seats = Seats.query.filter_by(venue_id=vid).all()
+    return render_template('uvenueview.html', venues=venues, user=current_user, seats=seats)
 # ******* User's routers end here ******

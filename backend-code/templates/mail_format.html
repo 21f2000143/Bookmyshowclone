@@ -1,0 +1,36 @@
+<h1>Monthly Report of Users</h1>
+<table border="1">
+    <thead>
+        <tr>
+            <th>email</th>
+            <th>tickets</th>
+            <th>show_name</th>
+            <th>show_rating</th>
+            <th>show_tag</th>
+            <th>show_price</th>
+            <th>show_stime</th>
+            <th>show_etime</th>
+            <th>no_seats</th>
+            <th>book_time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in datadict %}
+        <tr>
+            <th>{{user['email']}}</th>
+        </tr>
+        {% for item in user['tickets'] %}
+        <tr>
+            <th>{{item['show_name']}}</th>
+            <th>{{item['show_rating']}}</th>
+            <th>{{item['show_tag']}}</th>
+            <th>{{item['show_price']}}</th>
+            <th>{{item['show_stime'].strftime("%c")}}</th>
+            <th>{{item['show_etime'].strftime("%c")}}</th>
+            <th>{{item['no_seats']}}</th>
+            <th>{{item['book_time'].strftime("%c")}}</th>
+        </tr>
+        {% endfor %}
+        {%endfor%}
+    </tbody>
+</table>

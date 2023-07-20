@@ -42,7 +42,7 @@
                   <form action="{{ url_for('show_book', user_id=user.user_id, show_id=show.show_id, venue_id=venue.venue_id )}}" class="row g-3" method="post">
                     <div class="row-md-6">
                         <div class="input-group">
-                          <input type="text" name="vname" class="form-control" placeholder="Available seats:{{ show.no_seats}}" required readonly>
+                          <input type="text" name="vname" class="form-control" placeholder="Available seats:{{ seat.no_seats}}" required readonly>
                         </div>
                         </div>
                         <br>

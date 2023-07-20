@@ -1,5 +1,6 @@
 from flask_restful import Resource, fields, marshal_with, reqparse, marshal, output_json
-from application.database import db_session
+from application.database import db
+from flask_security import login_required, current_user, roles_required, auth_required
 from .models import *
 from .validation import *
 import requests
@@ -33,6 +34,7 @@ create_venue_parser.add_argument("venue_capacity", type=int)
 create_venue_parser.add_argument("venue_location", type=str)
 
 class venueApi(Resource):
+    # @auth_required('token')
     @marshal_with(venue)#completed and ready for share
     def get(self):
         try:
@@ -69,10 +71,10 @@ class venueApi(Resource):
                 venue.venue_place=venue_place
                 venue.venue_location=venue_location
                 venue.venue_capacity=venue_capacity
-                db_session.session.commit()
+                db.session.commit()
                 return venue
             except requests.exceptions.RequestException as e:
-                db_session.session.rollback()
+                db.session.rollback()
                 raise NetworkError(status_code=405, message="Error: {}".format(e))    
     def delete(self, venue_id):
         if venue_id is None:
@@ -84,13 +86,13 @@ class venueApi(Resource):
                 try:
                     venue = Venue.query.filter_by(venue_id=venue_id).first()
                     for show in venue.shows:
-                        db_session.session.delete(show)
-                        db_session.session.commit()
-                    db_session.session.delete(venue)
-                    db_session.session.commit()
+                        db.session.delete(show)
+                        db.session.commit()
+                    db.session.delete(venue)
+                    db.session.commit()
                     return output_json(data={"message":"successfully deleted"}, code=200)
                 except requests.exceptions.RequestException as e:
-                    db_session.session.rollback()
+                    db.session.rollback()
                     raise NetworkError(status_code=405, message="Error: {}".format(e))
             else:
                 raise NotFoundError(status_code=404)    
@@ -113,11 +115,11 @@ class venueApi(Resource):
         else:
             try:
                 venue=Venue(venue_name=venue_name, venue_place=venue_place, venue_capacity=venue_capacity, venue_location=venue_location)
-                db_session.session.add(venue)
-                db_session.session.commit()
+                db.session.add(venue)
+                db.session.commit()
                 return venue
             except requests.exceptions.RequestException as e:
-                db_session.session.rollback()
+                db.session.rollback()
                 raise NetworkError(status_code=405, message="Error: {}".format(e))    
 
 shows= {
@@ -198,10 +200,10 @@ class showApi(Resource):
                 show.no_seats=no_seats
                 show.show_stime=datetime.strptime(show_stime, date_format)
                 show.show_etime=datetime.strptime(show_etime, date_format)
-                db_session.session.commit()
+                db.session.commit()
                 return show
             except requests.exceptions.RequestException as e:
-                db_session.session.rollback()
+                db.session.rollback()
                 raise NetworkError(status_code=405, message="Error: {}".format(e))
             
     def delete(self, show_id):
@@ -213,11 +215,11 @@ class showApi(Resource):
             if show_id in vids:
                 try:
                     show = Show.query.filter_by(show_id=show_id).first()
-                    db_session.session.delete(show)
-                    db_session.session.commit()
+                    db.session.delete(show)
+                    db.session.commit()
                     return output_json(data={"message":"successfully deleted"}, code=200)
                 except requests.exceptions.RequestException as e:
-                    db_session.session.rollback()
+                    db.session.rollback()
                     raise NetworkError(status_code=405, message="Error: {}".format(e))
             else:
                 raise NotFoundError(status_code=404)
@@ -252,11 +254,11 @@ class showApi(Resource):
                 sstime=datetime.strptime(show_stime, date_format)
                 setime=datetime.strptime(show_etime, date_format)
                 show=Show(show_name=show_name, show_tag=show_tag, show_price=show_price, no_seats=int(no_seats), show_stime=sstime, show_etime=setime)
-                db_session.session.add(show)
-                db_session.session.commit()
+                db.session.add(show)
+                db.session.commit()
                 return show
             except requests.exceptions.RequestException as e:
-                db_session.session.rollback()
+                db.session.rollback()
                 raise NetworkError(status_code=405, message="Error: {}".format(e))
 
 ticket={
@@ -315,10 +317,10 @@ class userApi(Resource):
                     user.username=username
                     user.mobile=mobile
                     user.password=password
-                    db_session.session.commit()
+                    db.session.commit()
                     return user
                 except requests.exceptions.RequestException as e:
-                    db_session.session.rollback()
+                    db.session.rollback()
                     raise NetworkError(status_code=405, message="Error: {}".format(e))
             else:
                 raise NotFoundError(status_code=404)
@@ -331,11 +333,11 @@ class userApi(Resource):
             if id in ids:
                 try:
                     user=User.query.filter_by(id=id).first()
-                    db_session.session.delete(user)
-                    db_session.session.commit()
+                    db.session.delete(user)
+                    db.session.commit()
                     return output_json(data={"message":"successfully deleted"}, code=200)
                 except requests.exceptions.RequestException as e:
-                    db_session.session.rollback()
+                    db.session.rollback()
                     raise NetworkError(status_code=405, message="Error: {}".format(e))
             else:
                 raise NotFoundError(status_code=404)
@@ -355,11 +357,11 @@ class userApi(Resource):
         else:
             try:
                 user = User(id=id, username=username, mobile=mobile, password=password)
-                db_session.session.add(user)
-                db_session.session.commit()
+                db.session.add(user)
+                db.session.commit()
                 return user
             except requests.exceptions.RequestException as e:
-                db_session.session.rollback()
+                db.session.rollback()
                 raise NetworkError(status_code=405, message="Error: {}".format(e))
             
 # ticket_output={

@@ -1,67 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-    <title>Ticket Show</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <!-- <script src="{{url_for('static', filename='img/kids-zone-collection.avif')}}https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+  <!-- using vue2 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Belanosima&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <title>Ticket Show</title>
+  <style>
+    body {
+      padding-top: 80px; /* Add padding to the top to create space for the navbar */
+    }
+    .curve-corner{
+      border-radius: 2% 2% 2% 2%;
+    }
+      /* Custom CSS for horizontal scrolling */
+  .scroll-container {
+    position: relative;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 20px;
+  }
+/* Hide the scrollbar */
+  .scroll-container::-webkit-scrollbar {
+    height: 8px;
+    width: 0.5em;
+    display: none;
+  }
+
+  /* Customize scrollbar thumb */
+  .scroll-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+  }
+
+  /* Hide scrollbar track */
+  .scroll-container::-webkit-scrollbar-track {
+    background-color:transparent;
+  }
+
+/* On hover, show scrollbar thumb */
+.scrollable-container:hover::-webkit-scrollbar-thumb {
+  background-color: #555;
+}
+
+
+  .scroll-item {
+    display: inline-block;
+    width: 200px; /* Adjust the width as needed */
+    height: 200px; /* Adjust the height as needed */
+    margin-right: 10px; /* Adjust the spacing between items */
+  }
+  .scroll-item1 {
+    display: inline-block;
+    width: 20px; /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
+    margin-right: 200px; /* Adjust the spacing between items */
+  }
+  </style>   
 </head>
-<body class="scrollarea rounded border border-bottom-0 row-gap-5" style="padding-top: 50px; padding-bottom: 30px;">
-    <nav class="navbar navbar-expand-lg bg-light fixed-top">
-        <div class="container-fluid align-middle">
-            <div class="d-flex flex-row mb-3">
-                <h4><span class="badge bg-secondary">Summary</span></h4>
-            </div>
-            <div class="d-flex flex-row-reverse">
-                <div class="p-2"><a href="/login" class="btn btn-outline-primary">login</a></div>
-            </div>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#" style="font-family: 'Belanosima', sans-serif;">Ticket Show V2</a>
+      <form action="/" class="d-flex mt-3" role="search" method="post">
+        <input class="form-control me-2" type="search" name="words" placeholder="Search by Movies, Venues, Ratings, Places, Genres" aria-label="Search">
+        <button class="btn btn-success" type="submit">Search</button>
+      </form>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-    </nav>
-    <div class="container text-center">
-        {% if venues|length > 0 %}
-        <div class="row">
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for venue in venues %}
-                {% if venue.shows|length > 0 %}
-                    <div class="col">
-                        <div class="card text-center bg-body-secondary">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ venue.venue_name }}</h5>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h6>Available Shows</h6>
-                                    </div> 
-                                    <ul class="list-group list-group-flush">
-                                    {% for show in venue.shows %}                            
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col">
-                                                {{show.show_name}}
-                                            </div>
-                                            <div class="col">
-                                                
-                                            </div>
-                                        </div>
-                                    </li>
-                                    {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                {% endif %}
-            {% endfor %}
-            </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="badge text-bg-dark">Location</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn" href="/login"><span class="badge text-bg-primary">login</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn" href="/register"><span class="badge text-bg-success">Register</span></a>
+            </li>
+          </ul>
         </div>
-        {% else %}
-        <div class="alert alert-info" role="alert" style="margin-top: 4.5%;">
-            No shows and venues Available.
-        </div>
-        {% endif %}
+      </div>
     </div>
+  </nav>
+  <header class="bg-light d-block container scroll-container" sy>
+    <div class="scroll-item1"><span class="badge text-bg-primary">Primary</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-secondary">Secondary</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-success">Success</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-danger">Danger</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-warning">Warning</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-warning">Warning</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-info">Info</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-light">Light</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-dark">Dark</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-dark">Dark</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-primary">Primary</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-success">Success</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-warning">Warning</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-dark">Dark</span></div>
+    <div class="scroll-item1"><span class="badge text-bg-dark">Dark</span></div>
+  </header>
+  <div class="container-fluid">
+    {% if venues|length > 0 %}
+    <label for="" style="font-family: 'Courgette', cursive;">Top 3 Movies</label>
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col">
+        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+              <a href="#"><img src="{{url_for('static', filename='img/motogpweb.avif')}}" class="d-block w-100 h-10" alt="..."></a>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+              <a href="#"><img src="{{url_for('static', filename='img/loveweb.avif')}}" class="d-block w-100 h-10" alt="..."></a>
+            </div>
+            <div class="carousel-item">
+              <a href="#"><img src="{{url_for('static', filename='img/webbannernpa.avif')}}" class="d-block w-100 h-10" alt="..."></a>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <label for="" style="font-family: 'Courgette', cursive;">Most watched movies</label>
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col d-flex justify-content-center">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="card ">
+              <a href="#"><img src="{{url_for('static', filename='img/comedy-shows-collection.avif')}}" class="card-img-top curve-corner" alt="..."></a>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card ">
+              <a href="#"><img src="{{url_for('static', filename='img/esports-collection.avif')}}" class="card-img-top curve-corner" alt="..."></a>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card ">
+              <a href="#"><img src="{{url_for('static', filename='img/kids-zone-collection.avif')}}" class="card-img-top curve-corner" alt="..."></a>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card ">
+              <a href="#"><img src="{{url_for('static', filename='img/music-shows-collection.avif')}}" class="card-img-top curve-corner" alt="..."></a>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% for venue in venues %}
+      <label for=""><a href="{{url_for('theatre_view', vid=venue.venue_id)}}">{{ venue.venue_name }}</a></label>
+      <div class="scroll-container">
+        <!-- Add more items as needed -->
+        {% for show in venue.shows %}
+        <div class="card scroll-item">
+          <a href="#"><img src="{{url_for('static', filename='img/kids-zone-collection.avif')}}" class="card-img-top curve-corner" alt="..." ></a>
+          <div class="card-body">
+            <h5 class="card-title">{{show.show_stime.strftime("%H:%M")}}-{{show.show_etime.strftime("%H:%M")}}</h5>
+            {% for seat in seats %}
+            {% if seat.show_id==show.show_id and venue.venue_id==seat.venue_id %}
+            {% if seat.no_seats>0 %}
+            <a href="/login" class="btn btn-primary">Book Now</a>
+            {% else %}
+            <span class="badge text-bg-secondary">Show Full</span>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div> 
+        {% endfor %}
+      </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-info" role="alert" style="margin-top: 4.5%;">
+        No shows and venues Available.
+    </div>
+    {% endif %}   
+  </div>
+  <footer class="bg-dark text-light text-center">&COPY;IIT Madras Online Degree Program
+    <div><h1>Ticket Show V2</h1></div>
+  </footer>
 </body>
 </html>

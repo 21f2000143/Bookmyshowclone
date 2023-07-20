@@ -1,9 +1,16 @@
-#navbar1 {
+.navbar {
     background-color: rgb(51, 53, 69);
     height: 64px;
     width: 100%;
-    padding: 0px;
+    padding: 8px 8px 8px 8px;
     box-shadow: none;
+}
+.my-container{
+    height: 79vh;
+    background-color: lightgreen;
+}
+.sidebar1{
+    background-color:black;
 }
 .basewidth {
     width: 1240px;
@@ -58,8 +65,7 @@
     overflow: hidden;
 }
 .scrollarea {
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 .video-player {
     width: 80%;

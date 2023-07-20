@@ -32,15 +32,18 @@
     </div>
     <div class="position-absolute top-50 start-50 translate-middle">
         <div class="card p-3 justify-content-center" style="width: 18rem;">
-            <form action="/admin/dashboard" class="row g-3" method="post">
+            <form action="/admin/dashboard" class="row g-3" method="post" id="create_show">
                 <div class="row-md-6">
                     <div class="input-group">
                       <input type="text" name="sname" class="form-control" placeholder="Show Name" required>
                     </div>
-                    </div>
                     <br>
                     <div class="row-md-6">
                         <input type="text" name="stag" class="form-control" placeholder="Show tag" required>
+                    </div>
+                    <br>
+                    <div class="row-md-6">
+                        <input type="text" name="img_name" class="form-control" placeholder="enter img name" required>
                     </div>
                     <br>
                     <div class="row-md-6">
@@ -54,19 +57,48 @@
                     <div class="row-md-6">
                         <input type="time" name="setime" class="form-control" placeholder="end time" required>
                     </div>
+                    <br>
                     <div class="row-md-6">
                         <input type="hidden" name="operation" value="create_show">
                     </div>
                     <div class="row-md-6">
-                        <input type="hidden" name="v_id" value="{{ venue.venue_id }}">
+                        <input id="allvenues" list="browsers" class="form-control">
+                        <br>
+                        <datalist id="browsers">
+                            {% for venue in venues %}
+                            <option value="{{ venue.venue_name }}"></option>
+                            {% endfor %}
+                        </datalist>
+                        <button class="btn btn-secondary" onclick="getSelectedOptions(event)">add venue</button>
                     </div>
                     <br>
+                    <div id="parent">
+
+                    </div>
+                    <input type="hidden" id="addedvenues" name="addedvenues">
                     <div class="row-12 d-flex justify-content-center">
-                        <button class="btn btn-outline-secondary" id="loginBtn" type="submit">save</button>
+                        <button class="btn btn-outline-secondary" id="loginBtn" onclick="sendSelection(event)" type="submit">save</button>
                     <div class="0">
                 </div>
             </form>
         </div>
     </div>    
 </body>
+<script>
+const selectedVenues=new Array();
+function getSelectedOptions(event) {
+    var venue=document.getElementById("allvenues");
+    selectedVenues.push(venue.value); 
+    console.log(selectedVenues)
+    event.preventDefault(); // prevents the form from submitting
+}
+function sendSelection(){
+    var inputElement = document.createElement("input");
+    inputElement.setAttribute("type", "hidden");
+    inputElement.value = selectedVenues.toString();
+    inputElement.name = "addedvenues";
+    document.getElementById("parent").appendChild(inputElement);
+    document.getElementById("create_show").submit();
+}
+</script>
 </html>

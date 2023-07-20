@@ -1,14 +1,15 @@
 # from .database import db
 # from sqlalchemy import Index
 # from flask_security import UserMixin, RoleMixin
-from application.database import Base
+
+from application.database import *
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Boolean, DateTime, Column, Integer, \
                     String, ForeignKey, UnicodeText, Float
 
 #Creating models/tables for the the database
-class Venue(Base):
+class Venue(db.Model):
     __tablename__= 'venue'
     venue_id=Column(Integer, primary_key=True, autoincrement = True)
     venue_name = Column(String, nullable=False)
@@ -17,14 +18,21 @@ class Venue(Base):
     venue_location = Column(String, nullable=False)
     shows = relationship('Show', secondary='venue_shows')
 
-class Show(Base):
+class Seats(db.Model):
+    __tablename__='seats'
+    seats_id=Column(Integer, primary_key=True, autoincrement=True)
+    venue_id=Column(Integer, nullable=False)
+    show_id=Column(Integer, nullable=False)
+    no_seats = Column(Integer)
+
+class Show(db.Model):
     __tablename__='show'
     show_id=Column(Integer, primary_key=True, autoincrement=True)
     show_name = Column(String, nullable=False)
+    img_name = Column(String)
     show_rating = Column(Float)
     show_tag = Column(String(20), nullable=False)
     show_price = Column(Float, nullable=False)
-    no_seats = Column(Integer, nullable=False)
     show_stime = Column(DateTime)
     show_etime = Column(DateTime)
     # show_venue = Column(String, nullable=False)
@@ -40,7 +48,7 @@ class Show(Base):
 #     show_name=Column(String)
 #     show_tag=Column(String)
 
-class Venue_Shows(Base):
+class Venue_Shows(db.Model):
     __tablename__='venue_shows'
     show_id = Column(Integer, ForeignKey('show.show_id'), primary_key=True, nullable=False)
     venue_id = Column(Integer, ForeignKey('venue.venue_id'), primary_key=True, nullable=False)
@@ -66,7 +74,7 @@ class Venue_Shows(Base):
 #     fs_uniquifier = Column(String(64), unique=True, nullable=False)
 #     role=relationship('Role', secondary=roles_users, backref=backref('users', lazy='dynamic'))
 
-class User_Tickets(Base):
+class User_Tickets(db.Model):
     __tablename__='user_tickets'
     user_id = Column(Integer, ForeignKey('user.id'), primary_key=True, nullable=False)
     ticket_id = Column(Integer, ForeignKey('ticket.ticket_id'), primary_key=True, nullable=False)
@@ -78,28 +86,29 @@ class User_Tickets(Base):
 #     emp_mobile = Column(String(20), nullable=False)
 #     emp_pass = Column(String, nullable=False) 
 
-class Ticket(Base):
+class Ticket(db.Model):
     __tablename__='ticket'
     ticket_id = Column(Integer(), primary_key=True, autoincrement=True)
     venue_id = Column(Integer(), nullable=False)
     show_id = Column(Integer(), nullable=False)
     no_seats = Column(Integer(), nullable=False)
+    book_time = Column(DateTime)
 # All models have been created, let's move to other part.
 
-class RolesUsers(Base):
+class RolesUsers(db.Model):
     __tablename__ = 'roles_users'
     id = Column(Integer(), primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
     role_id = Column('role_id', Integer(), ForeignKey('role.id'))
 
-class Role(Base, RoleMixin):
+class Role(db.Model, RoleMixin):
     __tablename__ = 'role'
     id = Column(Integer(), primary_key=True)
     name = Column(String(80), unique=True)
     description = Column(String(255))
     permissions = Column(UnicodeText)
 
-class User(Base, UserMixin):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True)

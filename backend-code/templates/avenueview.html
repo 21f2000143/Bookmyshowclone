@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>User:{{emp_id}}</title>
+    <style>
+        body {
+          padding-top: 80px; /* Add padding to the top to create space for the navbar */
+        }
+        .card.{
+          width: 300px;
+        }
+        .curve-corner{
+          border-radius: 2% 2% 2% 2%;
+        }
+          /* Custom CSS for horizontal scrolling */
+      .scroll-container {
+        position: relative;
+        overflow-x: auto;
+        white-space: nowrap;
+        margin-bottom: 20px;
+      }
+    /* Hide the scrollbar */
+      .scroll-container::-webkit-scrollbar {
+        height: 8px;
+        width: 0.5em;
+        display: none;
+      }
+    
+      /* Customize scrollbar thumb */
+      .scroll-container::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 5px;
+      }
+    
+      /* Hide scrollbar track */
+      .scroll-container::-webkit-scrollbar-track {
+        background-color:transparent;
+      }
+    
+    /* On hover, show scrollbar thumb */
+    .scrollable-container:hover::-webkit-scrollbar-thumb {
+      background-color: #555;
+    }
+    
+    
+      .scroll-item {
+        display: inline-block;
+        width: 200px; /* Adjust the width as needed */
+        height: 200px; /* Adjust the height as needed */
+        margin-right: 10px; /* Adjust the spacing between items */
+      }
+      .scroll-item1 {
+        display: inline-block;
+        width: 20px; /* Adjust the width as needed */
+        height: 20px; /* Adjust the height as needed */
+        margin-right: 200px; /* Adjust the spacing between items */
+      }
+      </style> 
+</head>
+<body>
+    <div class="container text-center">
+        <nav class="navbar navbar-expand-lg bg-light fixed-top">
+            <div class="container-fluid align-middle">
+                <div class="d-flex flex-row">
+                    <h4><span class="badge bg-secondary">{{ emp_id }}'s Dashboard</span></h4>
+                </div>
+                <div class="d-flex flex-row-reverse">
+                    <div class="p-2"><a href="/logout" class="btn btn-outline-primary">logout</a></div>
+                    <div class="p-2"><a href="{{url_for('admin_dashboard')}}" class="btn btn-outline-primary">Go back</a></div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <label for="" style="font-family: 'Courgette', cursive;">Top 3 Movies</label>
+        <div class="row" style="margin-bottom: 20px;">
+          <div class="card">
+            <a href="#"><img src="{{url_for('static', filename='img/webbannernpa.avif')}}" class="d-block w-100 h-10" alt="..."></a>
+          </div>
+        </div>
+        <label for="" style="font-family: 'Courgette', cursive;">Most watched movies</label>
+        <div class="row" style="margin-bottom: 20px;">
+          <div class="col d-flex justify-content-center">
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+              <div class="col">
+                <div class="card">
+                  <a href="#"><img src="{{url_for('static', filename='img/comedy-shows-collection.avif')}}" class="card-img-top curve-corner" alt="..."></a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card ">
+                  <a href="#"><img src="{{url_for('static', filename='img/esports-collection.avif')}}" class="card-img-top curve-corner" alt="..."></a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card ">
+                  <a href="#"><img src="{{url_for('static', filename='img/kids-zone-collection.avif')}}" class="card-img-top curve-corner" alt="..."></a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card ">
+                  <a href="#"><img src="{{url_for('static', filename='img/music-shows-collection.avif')}}" class="card-img-top curve-corner" alt="..."></a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <label for="">{{ venues.venue_name }}</label>
+        {% if venues.shows|length > 0 %}
+        <div class="scroll-container">
+          <!-- Add more items as needed -->
+          {% for show in venues.shows %} 
+          <div class="scroll-item"><a href="#"><img src="{{url_for('static', filename='img/kids-zone-collection.avif')}}" class="card-img-top curve-corner" alt="..." ></a></div>
+          <div class="card-footer">
+            <small class="text-muted">{{show.show_stime.strftime("%H:%M")}}-{{show.show_etime.strftime("%H:%M")}}</small>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info" role="alert" style="margin-top: 4.5%;">
+            No shows Available.
+        </div>
+        {% endif %}   
+    </div>
+    <footer class="bg-dark text-light text-center">&COPY;IIT Madras Online Degree Program
+      <div><h1>Ticket Show V2</h1></div>
+    </footer>
+</body>
+</html>

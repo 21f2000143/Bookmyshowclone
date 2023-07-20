@@ -16,6 +16,11 @@
                 <div class="d-flex flex-row">
                     <h4><span class="badge bg-secondary">{{ emp_id }}'s Dashboard</span></h4>
                 </div>
+                <form action="{{url_for('admin_dashboard')}}" class="d-flex mt-3" role="search" method="post">
+                    <input class="form-control me-2" type="search" name="words" placeholder="Search by Movies, Venues, Ratings, Places, Genres" aria-label="Search">
+                    <input type="hidden" name="operation" value="search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
                 <div class="d-flex flex-row-reverse">
                     <div class="p-2"><a href="/logout" class="btn btn-outline-primary">logout</a></div>
                     <div class="p-2">
@@ -36,7 +41,7 @@
                 <div class="col">
                     <div class="card text-center bg-body-secondary">
                         <div class="card-body">
-                        <h5 class="card-title">{{ venues[i].venue_name }}</h5>
+                        <h5 class="card-title"><a href="{{url_for('atheatre_view', vid=venues[i].venue_id)}}">{{ venues[i].venue_name }}</a></h5>
                         <div class="card">
                             <div class="card-header">
                                 <h6>Available Shows</h6>
@@ -50,18 +55,24 @@
                                         {{show.show_name}}
                                     </div>
                                     <div class="col">
+                                        {{show.show_stime.strftime("%H:%M")}}
+                                    </div>
+                                    <div class="col">
+                                        {{show.show_etime.strftime("%H:%M")}}
+                                    </div>
+                                    <div class="col">
                                         <a href="{{url_for('show_action', s_id=show.show_id, v_id=venues[i].venue_id)}}" class="btn btn-warning">Actions</a>
                                     </div>
                                 </div>
                             </li>
                             {% endfor %}
-                            <form action="{{url_for('create_show', v_id=venues[i].venue_id)}}" method="post">
+                            <form action="{{url_for('create_show')}}" method="post">
                                 <button class="btn btn-outline-primary" type="submit">Add show</button>
                             </form>
                             </ul>
                             {% else %}
                             <p>No shows created</p>
-                            <form action="{{url_for('create_show', v_id=venues[i].venue_id)}}" method="post">
+                            <form action="{{url_for('create_show')}}" method="post">
                                 <button class="btn btn-outline-primary" type="submit">Add show</button>
                             </form>
                             {% endif %}
